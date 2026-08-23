@@ -137,7 +137,7 @@ def load_data():
 price_model, category_model, price_encoders, category_encoders = load_models()
 
 df = load_data()
-df = pd.read_csv(watches_path)
+
 
 
 df = pd.read_csv("watches_cleaned.csv")
