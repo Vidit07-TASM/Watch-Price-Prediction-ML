@@ -83,44 +83,60 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-price_model_path = hf_hub_download(
-    repo_id="TASMVIDIT07/watch-price-prediction-model",
-    filename="random_forest_model.pkl"
-)
-
 HF_REPO = "TASMVIDIT07/watch-price-prediction-model"
 
-price_model_path = hf_hub_download(
-    repo_id=HF_REPO,
-    filename="random_forest_model.pkl"
-)
 
-category_model_path = hf_hub_download(
-    repo_id=HF_REPO,
-    filename="watch_category_classifier.pkl"
-)
+@st.cache_resource
+def load_models():
 
-price_encoders_path = hf_hub_download(
-    repo_id=HF_REPO,
-    filename="label_encoders.pkl"
-)
+    price_model_path = hf_hub_download(
+        repo_id=HF_REPO,
+        filename="random_forest_model.pkl"
+    )
 
-category_encoders_path = hf_hub_download(
-    repo_id=HF_REPO,
-    filename="classification_label_encoders.pkl"
-)
+    category_model_path = hf_hub_download(
+        repo_id=HF_REPO,
+        filename="watch_category_classifier.pkl"
+    )
 
-watches_path = hf_hub_download(
-    repo_id=HF_REPO,
-    filename="watches_cleaned.csv"
-)
+    price_encoders_path = hf_hub_download(
+        repo_id=HF_REPO,
+        filename="label_encoders.pkl"
+    )
 
-price_model = joblib.load(price_model_path)
-category_model = joblib.load(category_model_path)
+    category_encoders_path = hf_hub_download(
+        repo_id=HF_REPO,
+        filename="classification_label_encoders.pkl"
+    )
 
-price_encoders = joblib.load(price_encoders_path)
-category_encoders = joblib.load(category_encoders_path)
+    price_model = joblib.load(price_model_path)
+    category_model = joblib.load(category_model_path)
 
+    price_encoders = joblib.load(price_encoders_path)
+    category_encoders = joblib.load(category_encoders_path)
+
+    return (
+        price_model,
+        category_model,
+        price_encoders,
+        category_encoders
+    )
+
+
+@st.cache_data
+def load_data():
+
+    watches_path = hf_hub_download(
+        repo_id=HF_REPO,
+        filename="watches_cleaned.csv"
+    )
+
+    return pd.read_csv(watches_path)
+
+
+price_model, category_model, price_encoders, category_encoders = load_models()
+
+df = load_data()
 df = pd.read_csv(watches_path)
 
 
