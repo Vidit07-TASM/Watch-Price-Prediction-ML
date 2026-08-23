@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import joblib
+from huggingface_hub import hf_hub_download
 
 
 st.set_page_config(
@@ -82,7 +83,12 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-price_model = joblib.load("random_forest_model.pkl")
+price_model_path = hf_hub_download(
+    repo_id="TASMVIDIT07/watch-price-prediction-model",
+    filename="random_forest_model.pkl"
+)
+
+price_model = joblib.load(price_model_path)
 category_model = joblib.load("watch_category_classifier.pkl")
 
 
