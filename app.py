@@ -88,12 +88,40 @@ price_model_path = hf_hub_download(
     filename="random_forest_model.pkl"
 )
 
+HF_REPO = "TASMVIDIT07/watch-price-prediction-model"
+
+price_model_path = hf_hub_download(
+    repo_id=HF_REPO,
+    filename="random_forest_model.pkl"
+)
+
+category_model_path = hf_hub_download(
+    repo_id=HF_REPO,
+    filename="watch_category_classifier.pkl"
+)
+
+price_encoders_path = hf_hub_download(
+    repo_id=HF_REPO,
+    filename="label_encoders.pkl"
+)
+
+category_encoders_path = hf_hub_download(
+    repo_id=HF_REPO,
+    filename="classification_label_encoders.pkl"
+)
+
+watches_path = hf_hub_download(
+    repo_id=HF_REPO,
+    filename="watches_cleaned.csv"
+)
+
 price_model = joblib.load(price_model_path)
-category_model = joblib.load("watch_category_classifier.pkl")
+category_model = joblib.load(category_model_path)
 
+price_encoders = joblib.load(price_encoders_path)
+category_encoders = joblib.load(category_encoders_path)
 
-price_encoders = joblib.load("label_encoders.pkl")
-category_encoders = joblib.load("classification_label_encoders.pkl")
+df = pd.read_csv(watches_path)
 
 
 df = pd.read_csv("watches_cleaned.csv")
